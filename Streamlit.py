@@ -21,6 +21,7 @@ import time
 
 model = resnet34()
 model.fc = nn.Linear(512, 11)
+device = 'cpu'
 model.load_state_dict(torch.load('best_params_resnet34.pt',  map_location=torch.device('cpu')))
 func_preprocess = T.Compose([
     T.Resize((224, 224)),
@@ -42,7 +43,7 @@ def get_prediction(image) -> str:
         10: 'snow'}
   
     image = preprocess(image)
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    device = 'cpu'
     model.to(device)
     model.eval()
     classes = (torch.argmax(model(image.unsqueeze(0).to(device)), dim=1)).item()
