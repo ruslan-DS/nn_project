@@ -42,7 +42,7 @@ def get_prediction(image) -> str:
         10: 'snow'}
   
     image = preprocess(image)
-    device = 'cpu' 
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model.to(device)
     model.eval()
     classes = (torch.argmax(model(image.unsqueeze(0).to(device)), dim=1)).item()
